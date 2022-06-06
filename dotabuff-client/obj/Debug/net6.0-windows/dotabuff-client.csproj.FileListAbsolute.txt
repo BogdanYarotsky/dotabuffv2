@@ -1,6 +1,0 @@
-C:\Users\syaro\dev\dotabuffv2\dotabuff-client\obj\Debug\net6.0-windows\dotabuff-client.csproj.AssemblyReference.cache
-C:\Users\syaro\dev\dotabuffv2\dotabuff-client\obj\Debug\net6.0-windows\MainWindow.g.cs
-C:\Users\syaro\dev\dotabuffv2\dotabuff-client\obj\Debug\net6.0-windows\App.g.cs
-C:\Users\syaro\dev\dotabuffv2\dotabuff-client\obj\Debug\net6.0-windows\dotabuff-client_Content.g.cs
-C:\Users\syaro\dev\dotabuffv2\dotabuff-client\obj\Debug\net6.0-windows\dotabuff-client_MarkupCompile.cache
-C:\Users\syaro\dev\dotabuffv2\dotabuff-client\obj\Debug\net6.0-windows\dotabuff-client_MarkupCompile.lref
