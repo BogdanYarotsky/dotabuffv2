@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotabuffClient", "dotabuff-client\DotabuffClient.csproj", "{8714A2C3-87C3-4D5F-8807-50E58EBA525A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotabuffVisualizer", "dotabuff-visualizer\DotabuffVisualizer.csproj", "{EE641214-4803-4BB8-834D-E2404E885E96}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8714A2C3-87C3-4D5F-8807-50E58EBA525A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8714A2C3-87C3-4D5F-8807-50E58EBA525A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8714A2C3-87C3-4D5F-8807-50E58EBA525A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8714A2C3-87C3-4D5F-8807-50E58EBA525A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE641214-4803-4BB8-834D-E2404E885E96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE641214-4803-4BB8-834D-E2404E885E96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE641214-4803-4BB8-834D-E2404E885E96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE641214-4803-4BB8-834D-E2404E885E96}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3A462B43-50C3-4F88-85E9-1E8D40ADAFDC}
+	EndGlobalSection
+EndGlobal

@@ -12,19 +12,28 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using DotabuffClient.ViewModels;
 using DotabuffVisualizer;
 
-namespace dotabuff_client
+namespace DotabuffClient
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        private readonly MainWindowVM _mainWindowVM;
+
+        public MainWindow(DotabuffCrawler crawler)
         {
-            using var crawler = await DotabuffCrawler.CreateAsync();
             InitializeComponent();
+            _mainWindowVM = new MainWindowVM { Crawler = crawler };
+            DataContext = _mainWindowVM;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
