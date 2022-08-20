@@ -1,13 +1,15 @@
-using System.Text.Json;
+using DotabuffVisualizer.Data;
 using DotabuffVisualizer.Models;
+using System.Text.Json;
 
 namespace DotabuffVisualizer;
 
 public class DotaWinTransformer
 {
+    private Dictionary<string, (int, DotaItem.Type)> _cachedItems = null;
     private static readonly HttpClient _client = new();
     private readonly string[] boots = { "boots", "greaves", "treads" };
-    private readonly string[] excluded = { "Aegis of the Immortal", "Clarity", "Dust of Appearance", 
+    private readonly string[] excluded = { "Aegis of the Immortal", "Clarity", "Dust of Appearance",
     "Sentry Ward", "Bottle", "Aghanim's Shard", "Aghanim's Scepter" };
     private readonly string _apiKey;
 
@@ -17,12 +19,11 @@ public class DotaWinTransformer
         _apiKey = apiKey;
     }
 
-    public async Task<IEnumerable<DotaWinItem>> TransformItems(DotabuffHero hero)
+    public IAsyncEnumerable<DotaWinItem> TransformItems(DotabuffHero hero)
     {
-        var itemPrices = await ItemPriceDict();
         return hero.Items.Where(i => !excluded.Contains(i.Name)).Select(i =>
         {
-            var (price, type) = itemPrices[i.Name];
+            var (price, type) = _cachedItems[i.Name];
             var addedWinrate = i.Winrate - hero.Winrate;
             return new DotaWinItem
             {
@@ -30,20 +31,20 @@ public class DotaWinTransformer
                 Winrate = i.Winrate,
                 Matches = i.Matches,
                 Price = price,
-                ItemType = type,
+                Type = type,
                 AddedWinrate = Math.Round(addedWinrate, 2),
                 WinratePer1000Gold = Math.Round(addedWinrate / price * 1000, 2)
             };
         });
     }
 
-    private async Task<Dictionary<string, (int, DotaWinItem.Type)>> ItemPriceDict()
+    public async Task<Dictionary<string, (int, DotaItem.Type)>> CacheItemsAsync()
     {
         var url = @"https://api.steampowered.com/IEconDOTA2_570/GetGameItems/v1/?format=JSON&language=en_us&key=" + _apiKey;
         var jsonString = await _client.GetStringAsync(url);
         var obj = JsonSerializer.Deserialize<DotaItemsList>(jsonString);
         var itemsList = obj.result;
-        return itemsList.items
+        _cachedItems = itemsList.items
         .Where(i => i.recipe == 0 && i.localized_name != "Necronomicon")
         .Select(i =>
         {
@@ -56,7 +57,6 @@ public class DotaWinTransformer
                 }
             }
 
-
             var item = new
             {
                 Name = i.localized_name,
@@ -67,18 +67,20 @@ public class DotaWinTransformer
         })
         .ToDictionary(i => i.Name, i =>
         {
-            DotaWinItem.Type itemType;
+            DotaItem.Type itemType;
             if (i.Price <= 0)
             {
-                itemType = DotaWinItem.Type.Neutral;
+                itemType = DotaItem.Type.Neutral;
             }
             else if (boots.Any(b => i.Name.Contains(b, StringComparison.OrdinalIgnoreCase)))
             {
-                itemType = DotaWinItem.Type.Boots;
+                itemType = DotaItem.Type.Boots;
             }
-            else { itemType = DotaWinItem.Type.Core; }
+            else { itemType = DotaItem.Type.Core; }
+
             return (i.Price, itemType);
         });
 
+        return _cachedItems;
     }
 }

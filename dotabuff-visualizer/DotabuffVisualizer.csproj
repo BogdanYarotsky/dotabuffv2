@@ -4,11 +4,17 @@
 		<TargetFramework>net6.0</TargetFramework>
 		<RootNamespace>DotabuffVisualizer</RootNamespace>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<OutputType>Exe</OutputType>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="ConsoleTables" Version="2.4.2" />
-		<PackageReference Include="Microsoft.Playwright" Version="1.22.0" />
+		<PackageReference Include="Microsoft.Playwright" Version="1.25.0" />
+		<PackageReference Include="System.Linq.Async" Version="6.0.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\DotabuffVisualizer.Data\DotabuffVisualizer.Data.csproj" />
 	</ItemGroup>
 
 </Project>

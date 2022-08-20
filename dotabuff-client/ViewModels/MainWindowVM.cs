@@ -47,11 +47,11 @@ namespace DotabuffClient.ViewModels
 
         private async void SearchForHero()
         {
-            _searching = true;
+            SearchButtonCommand.CanExecute(false);
             var hero = await Crawler.GetHeroItemsAsync(SearchBarText);
             Winrate = hero.Winrate;
             HeroName = hero.HeroName;
-            _searching = false;
+            SearchButtonCommand.CanExecute(true);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

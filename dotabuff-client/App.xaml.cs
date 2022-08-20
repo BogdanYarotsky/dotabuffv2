@@ -17,7 +17,7 @@ namespace DotabuffClient
         private DotabuffCrawler _dotabuffCrawler;
         protected override async void OnStartup(StartupEventArgs e)
         {
-            _dotabuffCrawler = await DotabuffCrawler.CreateAsync();
+            _dotabuffCrawler = await DotabuffCrawler.StartAsync();
             base.OnStartup(e);
         }
 
