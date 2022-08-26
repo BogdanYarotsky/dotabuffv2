@@ -4,8 +4,12 @@ using DotabuffVisualizer.Data;
 
 Console.SetWindowSize(70, 35);
 
-
 await using var crawler = await DotabuffCrawler.StartAsync();
+
+var patch = await crawler.GetPatchVersionAsync();
+Console.WriteLine(patch);
+return;
+
 var transformer = new DotaWinTransformer("B479F4855E8EC7C228DF9045FA77978B");
 await transformer.CacheItemsAsync();
 
@@ -16,7 +20,6 @@ while (true)
     var hero = await crawler.ExtractDotabuffHeroInfo(heroName);
     Console.WriteLine(hero.HeroName);
     Console.WriteLine(hero.Winrate);
-
     var items = await transformer.TransformItems(hero).ToListAsync();
 
     ConsoleTable.From(items.Where(i => i.Type == DotaItem.Type.Boots && !i.Name.Contains("Travel"))

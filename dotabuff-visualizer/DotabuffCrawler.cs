@@ -7,13 +7,14 @@ public sealed class DotabuffCrawler : IAsyncDisposable
 {
     private const string heroItemsListSelector = "body > div.container-outer.seemsgood > div.skin-container > div.container-inner.container-inner-content > div.content-inner > section > article > table > tbody > tr";
     private const string heroWinrateSelector = "body > div.container-outer.seemsgood > div.skin-container > div.container-inner.container-inner-content > div.header-content-container > div.header-content > div.header-content-secondary > dl:nth-child(2) > dd > span";
+    private const string dotaPatchVersionSelector = "#dota_react_root > div > div > div.patchnotespage_Header_2uAz0 > div.patchnotespage_NotesTitle_oyfUT";
+
 
     private IPlaywright _playwright;
     private IBrowser _browser;
     private IBrowserContext _context;
     private IPage _page;
 
-    private DotabuffCrawler() { }
     private async Task<DotabuffCrawler> StartBrowserAsync()
     {
         // takes longest time
@@ -29,15 +30,25 @@ public sealed class DotabuffCrawler : IAsyncDisposable
         return this;
     }
 
+    public async Task<string> GetPatchVersionAsync()
+    {
+        var page = await _browser.NewPageAsync().ConfigureAwait(false);
+        _ = page.GotoAsync("https://www.dota2.com/patches").ConfigureAwait(false);
+        var locator = page.Locator(dotaPatchVersionSelector);
+        await locator.WaitForAsync().ConfigureAwait(false);
+        var patch = await page.Locator(dotaPatchVersionSelector).TextContentAsync().ConfigureAwait(false);
+        _ = page.CloseAsync().ConfigureAwait(false);
+        return patch;
+    }
+
     public async Task<DotabuffHero> ExtractDotabuffHeroInfo(string name)
     {
+        // build url
         var url = $"https://www.dotabuff.com/heroes/{name.ToLower().Replace(' ', '-')}/items";
         await _page.GotoAsync(url);
-
         // get hero winrate
         var heroWinrateText = await _page.Locator(heroWinrateSelector).InnerTextAsync();
         double.TryParse(heroWinrateText.Replace("%", ""), out var heroWinrate);
-
         // get items
         var rows = _page.Locator(heroItemsListSelector);
         var items = GetItemsAsync(rows, heroWinrate);
